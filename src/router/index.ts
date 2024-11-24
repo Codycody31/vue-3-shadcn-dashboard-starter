@@ -28,7 +28,7 @@ const updateDocumentTitle = (to: RouteLocationNormalizedGeneric, from: RouteLoca
     .find((r) => r.meta && r.meta.metaTags);
 
   if (nearestWithTitle) {
-    document.title = `${nearestWithTitle.meta.title} - Watchdog`;
+    document.title = `Dashboard : ${nearestWithTitle.meta.title}`;
   } else if (previousNearestWithMeta) {
     document.title = previousNearestWithMeta.meta.title;
   }
