@@ -1,3 +1,4 @@
+export { default as DataTable } from './DataTable.vue'
 export { default as DataTableFilterBox } from './DataTableFilterBox.vue'
 export { default as DataTableSearch } from './DataTableSearch.vue'
 export { default as DataTableResetFilter } from './DataTableResetFilter.vue'

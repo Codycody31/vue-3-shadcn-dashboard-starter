@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { cn } from '@/common/lib/utils.ts'
+import { cn } from '@/common/lib/utils'
 import { ChevronDown } from 'lucide-vue-next'
 import { SelectScrollDownButton, type SelectScrollDownButtonProps, useForwardProps } from 'radix-vue'
 import { computed, type HTMLAttributes } from 'vue'
