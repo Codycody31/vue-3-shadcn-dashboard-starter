@@ -109,9 +109,9 @@ const table = useVueTable({
                   class="px-4 py-2"
               >
                 <FlexRender
-                  :render="cell.column.columnDef.cell"
-                  :props="cell.getContext()"
-                  />
+                    :render="cell.column.columnDef.cell"
+                    :props="cell.getContext()"
+                />
               </TableCell>
             </TableRow>
           </template>
@@ -174,6 +174,7 @@ const table = useVueTable({
           <template v-else>No pages</template>
         </div>
         <div class="flex items-center space-x-2">
+          <!-- exampe implementation: https://tanstack.com/table/v8/docs/framework/vue/examples/pagination -->
           <Button
               aria-label="Go to first page"
               variant="outline"

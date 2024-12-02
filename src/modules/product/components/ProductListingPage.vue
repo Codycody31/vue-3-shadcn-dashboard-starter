@@ -1,22 +1,29 @@
 <script setup lang="ts">
 import {DataTable as ProductTable} from '@/common/components/ui/data-table';
+import {useRoute} from "vue-router";
+import {fakeProducts} from '@/constants/mock-api';
+import {Product} from '@/constants/data';
+import {h} from 'vue';
+import Image from '@/common/components/Image.vue';
+import CellAction from '@/modules/product/components/CellAction.vue';
 
 const columns = [
   {
     accessorKey: 'photo_url',
     header: 'IMAGE',
-    // cell: ({ row }) => {
-    //   return (
-    //       <div className="relative aspect-square">
-    //       <Image
-    //           src={row.getValue('photo_url')}
-    //   alt={row.getValue('name')}
-    //   fill
-    //   className="rounded-lg"
-    //       />
-    //       </div>
-    // );
-    // }
+    cell: ({row}) => h(
+        'div',
+        {
+          class: 'relative aspect-square',
+        },
+        [
+          h(Image, {
+            src: row.getValue('photo_url'),
+            alt: row.getValue('name'),
+            imageClass: 'rounded-lg',
+          }),
+        ]
+    ),
   },
   {
     accessorKey: 'name',
@@ -34,60 +41,40 @@ const columns = [
     accessorKey: 'description',
     header: 'DESCRIPTION'
   },
-  // {
-    // id: 'actions',
-    // cell: ({ row }) => <CellAction data={row.original} />
-  // }
+  {
+    id: 'actions',
+    cell: ({row}) => h(
+        CellAction,
+        {
+          data: row.original,
+        }
+    ),
+  }
 ];
 
-// TODO: Finish up migration, as currently, just using filler, not the actual filler design from the next one.
+const page = useRoute().query.page || 1;
+const search = useRoute().query.q || '';
+const pageLimit = useRoute().query.limit || 10;
+const categories = useRoute().query.categories || '';
+
+const filters = {
+  page,
+  limit: pageLimit,
+  ...(search && {search}),
+  ...(categories && {categories: categories})
+};
+
+// Add reactive data, so as filters change, the data will be re-fetched
+
+const data = await fakeProducts.getProducts(filters);
+const totalProducts = data.total_products;
+const products: Product[] = data.products;
 </script>
 
 <template>
   <ProductTable
       :columns="columns"
-      :data="[
-          {
-              id: 1,
-              name: 'Product 1',
-              category: 'Category 1',
-              price: 100,
-              description: 'Description 1',
-              photo_url: 'https://via.placeholder.com/150'
-          },
-          {
-              id: 2,
-              name: 'Product 2',
-              category: 'Category 2',
-              price: 200,
-              description: 'Description 2',
-              photo_url: 'https://via.placeholder.com/150'
-          },
-          {
-              id: 3,
-              name: 'Product 3',
-              category: 'Category 3',
-              price: 300,
-              description: 'Description 3',
-              photo_url: 'https://via.placeholder.com/150'
-          },
-          {
-              id: 4,
-              name: 'Product 4',
-              category: 'Category 4',
-              price: 400,
-              description: 'Description 4',
-              photo_url: 'https://via.placeholder.com/150'
-          },
-          {
-              id: 5,
-              name: 'Product 5',
-              category: 'Category 5',
-              price: 500,
-              description: 'Description 5',
-              photo_url: 'https://via.placeholder.com/150'
-          }
-      ]"
-      :totalItems="5"
+      :data="products"
+      :totalItems="totalProducts"
   />
 </template>
